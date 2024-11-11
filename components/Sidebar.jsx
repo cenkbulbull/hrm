@@ -7,6 +7,7 @@ import { MdOutlineDashboard } from "react-icons/md";
 import { FiUsers } from "react-icons/fi";
 import { IoAirplaneOutline } from "react-icons/io5";
 import { PiMoneyWavyBold } from "react-icons/pi";
+import { FaRegCalendar } from "react-icons/fa6";
 
 const Sidebar = () => {
   const currentPath = usePathname();
@@ -44,6 +45,15 @@ const Sidebar = () => {
         }`}
       >
         <PiMoneyWavyBold />
+      </Link>
+
+      <Link
+        href="/test"
+        className={`px-5 py-2 rounded-sm border-l-4 ${
+          currentPath === "/test" ? " border-blue-500" : "border-white "
+        }`}
+      >
+        <FaRegCalendar />
       </Link>
     </div>
   );
