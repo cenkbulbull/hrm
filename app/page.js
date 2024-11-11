@@ -1,8 +1,15 @@
+import ChartCard from "@/components/ChartCard";
 import InformationCard from "@/components/InformationCard";
 import TodayCard from "@/components/TodayCard";
 import { FiUsers } from "react-icons/fi";
 
 export default function Home() {
+  const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
+  const datasets = [12, 45, 67, 43, 89, 34, 67];
+
+  const pieData = [40, 30, 20, 10]; // Pie grafik verisi
+  const pieLabels = ["test", "tes2", "tess3", "test4"]; // Pie grafik etiketleri
+  const pieColors = ["#3B82F6", "#2C6EC8", "#60A9F3", "#276AB1"]; // Pie grafik renkleri
   return (
     <div>
       <InformationCard
@@ -18,6 +25,35 @@ export default function Home() {
       />
 
       <TodayCard />
+
+      {/* Line Chart */}
+      <ChartCard
+        chartType="line" // Line grafik
+        labels={labels}
+        datasets={datasets}
+        chartTitle="Line Chart"
+        xLabel="Months"
+        yLabel="Values"
+      />
+
+      {/* Bar Chart */}
+      <ChartCard
+        chartType="bar" // Bar grafik
+        labels={labels}
+        datasets={datasets}
+        chartTitle="Bar Chart"
+        xLabel="Months"
+        yLabel="Values"
+      />
+
+      {/* Pie Chart */}
+      <ChartCard
+        chartType="pie" // Grafik tipini "pie" olarak belirliyoruz
+        labels={pieLabels}
+        datasets={pieData}
+        chartTitle="Pie Chart Example"
+        backgroundColors={pieColors} // Renkleri dışarıdan veriyoruz
+      />
     </div>
   );
 }
