@@ -15,7 +15,7 @@ const Sidebar = () => {
     <div className="flex flex-col gap-4 text-xl bg-white rounded-2xl w-[75px] py-5">
       <Link
         href="/"
-        className={`px-5 py-2 rounded-sm border-l-4  ${
+        className={`px-5 py-2 rounded-sm border-l-4 hover:border-blue-500 transition-all${
           currentPath === "/" ? " border-blue-500" : "border-white"
         }`}
       >
@@ -23,7 +23,7 @@ const Sidebar = () => {
       </Link>
       <Link
         href="/test"
-        className={`px-5 py-2 rounded-sm border-l-4 ${
+        className={`px-5 py-2 rounded-sm border-l-4 hover:border-blue-500 transition-all ${
           currentPath === "/test" ? " border-blue-500" : "border-white "
         }`}
       >
@@ -31,7 +31,7 @@ const Sidebar = () => {
       </Link>
       <Link
         href="/test"
-        className={`px-5 py-2 rounded-sm border-l-4 ${
+        className={`px-5 py-2 rounded-sm border-l-4 hover:border-blue-500 transition-all ${
           currentPath === "/test" ? " border-blue-500" : "border-white "
         }`}
       >
@@ -40,7 +40,7 @@ const Sidebar = () => {
 
       <Link
         href="/test"
-        className={`px-5 py-2 rounded-sm border-l-4 ${
+        className={`px-5 py-2 rounded-sm border-l-4 hover:border-blue-500 transition-all ${
           currentPath === "/test" ? " border-blue-500" : "border-white "
         }`}
       >
@@ -49,7 +49,7 @@ const Sidebar = () => {
 
       <Link
         href="/test"
-        className={`px-5 py-2 rounded-sm border-l-4 ${
+        className={`px-5 py-2 rounded-sm border-l-4 hover:border-blue-500 transition-all ${
           currentPath === "/test" ? " border-blue-500" : "border-white "
         }`}
       >
