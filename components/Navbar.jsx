@@ -17,7 +17,7 @@ import { IoLogoBuffer } from "react-icons/io";
 
 const Navbar = () => {
   return (
-    <div className="flex justify-between items-center bg-white px-10 py-4 rounded-full">
+    <div className="flex justify-between items-center bg-white px-10 py-4 rounded-2xl">
       <div className="flex gap-1 items-center">
         <IoLogoBuffer className="text-3xl" />
         <span>hrm</span>

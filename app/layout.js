@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import "./globals.css";
 
 import { Lexend } from "next/font/google";
+import Sidebar from "@/components/Sidebar";
 const lexend = Lexend({ subsets: ["latin"] });
 
 export const metadata = {
@@ -12,9 +13,12 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${lexend.className} antialiased`}>
+      <body className={`${lexend.className} antialiased px-12 py-4 `}>
         <Navbar />
-        {children}
+        <div className="flex gap-4 mt-5">
+          <Sidebar />
+          <div className="flex-1">{children}</div>
+        </div>
       </body>
     </html>
   );
