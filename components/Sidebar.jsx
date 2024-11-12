@@ -34,9 +34,9 @@ const Sidebar = () => {
         <FiUsers />
       </Link>
       <Link
-        href="/test"
+        href="/leave-requests"
         className={`px-5 py-2 rounded-sm border-l-4 hover:border-blue-500 transition-all ${
-          isActive("/test") ? "border-blue-500" : "border-white"
+          isActive("/leave-requests") ? "border-blue-500" : "border-white"
         }`}
       >
         <IoAirplaneOutline />
@@ -52,9 +52,9 @@ const Sidebar = () => {
       </Link>
 
       <Link
-        href="/test"
+        href="/works"
         className={`px-5 py-2 rounded-sm border-l-4 hover:border-blue-500 transition-all ${
-          isActive("/test") ? "border-blue-500" : "border-white"
+          isActive("/works") ? "border-blue-500" : "border-white"
         }`}
       >
         <FaRegCalendar />
