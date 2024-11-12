@@ -40,7 +40,7 @@ const MeetingRequestCard = () => {
   const [date, setDate] = useState();
   return (
     <div className="flex flex-col gap-3 justify-between bg-white p-5 rounded-2xl max-w-[300px] font-light">
-      <div>Toplantı Ayarla</div>
+      <div>Set up a meeting</div>
 
       <Popover>
         <PopoverTrigger asChild className="text-xs">
