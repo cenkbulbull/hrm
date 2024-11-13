@@ -22,12 +22,17 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import EducationCard from "@/components/EducationCard";
 
 export default function page() {
   return (
     <div className="grid grid-cols-4 gap-3">
-      <MeetingRequestCard className="col-span-1" />
-      <TodoCard className="col-span-1" />
+      <MeetingRequestCard />
+      <TodoCard />
+
+      <div className="col-span-2">
+        <EducationCard />
+      </div>
 
       <div className="col-span-4 bg-white p-5 rounded-2xl ">
         <Table>
