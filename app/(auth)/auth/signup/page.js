@@ -10,13 +10,24 @@ export default function page() {
       <div className="flex items-center">
         <div className="mx-auto grid w-[350px] gap-6">
           <div className="grid gap-2 text-center">
-            <h1 className="text-xl font-bold">Login</h1>
+            <h1 className="text-xl font-bold">Signup</h1>
             <p className="text-balance text-muted-foreground text-xs">
-              Enter your email below to login to your account
+              Fill in the fields below to create an account.
             </p>
           </div>
 
           <div className="grid gap-4">
+            <div className="grid gap-2">
+              <Label htmlFor="fullname">Fullname</Label>
+              <Input
+                id="fullname"
+                type="fullname"
+                placeholder="Fullname"
+                required
+                className="text-xs placeholder:text-xs focus-visible:ring-0"
+              />
+            </div>
+
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -27,15 +38,10 @@ export default function page() {
                 className="text-xs placeholder:text-xs focus-visible:ring-0"
               />
             </div>
+
             <div className="grid gap-2">
               <div className="flex items-center">
                 <Label htmlFor="password">Password</Label>
-                <a
-                  href="/forgot-password"
-                  className="ml-auto inline-block text-sm underline"
-                >
-                  Forgot your password?
-                </a>
               </div>
               <Input
                 id="password"
@@ -45,17 +51,29 @@ export default function page() {
                 className="text-xs placeholder:text-xs focus-visible:ring-0"
               />
             </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="companyKey">Company Key</Label>
+              <Input
+                id="companyKey"
+                type="companyKey"
+                placeholder="Company Key"
+                required
+                className="text-xs placeholder:text-xs focus-visible:ring-0"
+              />
+            </div>
+
             <Button type="submit" className="w-full text-xs">
-              Login
+              Signup
             </Button>
             {/* <Button variant="outline" className="w-full">
               Login with Google
             </Button> */}
           </div>
           <div className="mt-4 text-center text-sm">
-            Dont have an account?
-            <Link href="signup" className="underline">
-              Sign up
+            Already have an account?
+            <Link href="login" className="underline">
+              Login
             </Link>
           </div>
         </div>
