@@ -15,13 +15,18 @@ const EmployeeCard = ({
   fullname,
   title,
   tel,
+  email,
+  startDate,
+  department,
+  salary,
   image = "https://github.com/shadcn.png",
-  link = "employees/1",
+  link = "1",
+  detail,
 }) => {
   return (
     <Link
-      href={link}
-      className="relative flex flex-col items-center gap-3 bg-white p-8 rounded-2xl shadow-md cursor-pointer"
+      href={`/employees/${link}`}
+      className="relative flex flex-col gap-3 bg-white p-8 rounded-2xl shadow-md cursor-pointer"
     >
       <DropdownMenu>
         <DropdownMenuTrigger className="absolute right-5 top-3">
@@ -45,10 +50,30 @@ const EmployeeCard = ({
         </Avatar>
       </div>
 
-      <div className="flex flex-col gap-1 items-center text-xs">
-        <div>{fullname}</div>
-        <div>{title}</div>
-        <div>{tel}</div>
+      <div className="flex flex-col gap-2 text-xs">
+        <div>
+          <span className="font-semibold">Fullname:</span> {fullname}
+        </div>
+        <div>
+          <span className="font-semibold">Department:</span> {department}
+        </div>
+        <div>
+          <span className="font-semibold">Title:</span> {title}
+        </div>
+        <div className={detail ? "flex flex-col gap-2" : "hidden"}>
+          <div>
+            <span className="font-semibold">Phone:</span> {tel}
+          </div>
+          <div>
+            <span className="font-semibold">Email:</span> {email}
+          </div>
+          <div>
+            <span className="font-semibold">Start Date:</span> {startDate}
+          </div>
+          <div>
+            <span className="font-semibold">Salary:</span> {salary}
+          </div>
+        </div>
       </div>
     </Link>
   );

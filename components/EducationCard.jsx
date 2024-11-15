@@ -28,7 +28,7 @@ import { GrChannel } from "react-icons/gr";
 
 const EducationCard = () => {
   return (
-    <div className="flex flex-col gap-3 bg-white p-5 rounded-2xl font-light">
+    <div className="flex flex-col gap-3 bg-white p-5 rounded-2xl font-light ">
       <div className="flex justify-between items-center">
         <div>Education List</div>
         <div className="flex gap-2">

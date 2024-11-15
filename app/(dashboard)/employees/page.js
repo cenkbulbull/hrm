@@ -18,31 +18,37 @@ export default function page() {
           fullname="Cenk Bülbül"
           title="Frontend Developer"
           tel="05366666666"
+          department="Software"
         />
         <EmployeeCard
           fullname="Cenk Bülbül"
           title="Frontend Developer"
           tel="05366666666"
+          department="Software"
         />
         <EmployeeCard
           fullname="Cenk Bülbül"
           title="Frontend Developer"
           tel="05366666666"
+          department="Software"
         />
         <EmployeeCard
           fullname="Cenk Bülbül"
           title="Frontend Developer"
           tel="05366666666"
+          department="Software"
         />
         <EmployeeCard
           fullname="Cenk Bülbül"
           title="Frontend Developer"
           tel="05366666666"
+          department="Software"
         />
         <EmployeeCard
           fullname="Cenk Bülbül"
           title="Frontend Developer"
           tel="05366666666"
+          department="Software"
         />
       </div>
 
