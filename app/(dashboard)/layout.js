@@ -7,47 +7,71 @@ import { MdNavigateNext } from "react-icons/md";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import React from "react";
+import Link from "next/link";
+
 export default function DashboardLayout({ children }) {
   const pathname = usePathname();
 
-  //Sadece url son kısım almak için
-  // const getPageTitle = () => {
-  //   if (pathname === "/") {
-  //     return "Dashboard";
-  //   }
-
-  //   const pageName = pathname.split("/").pop(); // URL'nin son kısmını alıyoruz
-  //   if (pageName) {
-  //     return pageName.charAt(0).toUpperCase() + pageName.slice(1); // İlk harfi büyük yapıyoruz
-  //   }
-
-  //   return "Dashboard";
-  // };
-
-  //Url'in tamamını kullanmak için
-  const getPageTitle = () => {
+  // Url'i bölelim ve breadcrumb oluşturacak şekilde işleyelim
+  const getBreadcrumbs = () => {
     if (pathname === "/") {
-      return "Dashboard";
+      return (
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <Link href="/">Home</Link>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      );
     }
 
-    // URL'yi bölelim ve her segmenti doğru şekilde işleyelim
+    // URL'yi bölelim ve her segmenti işleyelim
     const segments = pathname
       .split("/") // URL'yi / karakterinden bölelim
-      .filter(Boolean) // Boş değerleri çıkar
-      .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1)); // Her segmentin ilk harfini büyütüyoruz
+      .filter(Boolean); // Boş değerleri çıkar
 
-    // Segmentleri ikonla birleştiriyoruz
-    return segments.reduce((prev, curr, index) => {
-      // İkon sadece segmentler arasında olacak
-      return index === 0 ? (
-        <span key={curr}>{curr}</span>
-      ) : (
-        <div className="flex items-center gap-1">
-          {prev} <MdNavigateNext />
-          <span>{curr}</span>
-        </div>
-      );
-    });
+    // Breadcrumb için dinamik olarak item'ları oluşturalım
+    return (
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          <BreadcrumbLink asChild>
+            <Link href="/">Home</Link>
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        {segments.map((segment, index) => {
+          const href = "/" + segments.slice(0, index + 1).join("/");
+
+          return (
+            <React.Fragment key={segment}>
+              <BreadcrumbSeparator>
+                <MdNavigateNext />
+              </BreadcrumbSeparator>
+              <BreadcrumbItem>
+                {index === segments.length - 1 ? (
+                  <BreadcrumbPage>
+                    {segment.charAt(0).toUpperCase() + segment.slice(1)}
+                  </BreadcrumbPage>
+                ) : (
+                  <BreadcrumbLink asChild>
+                    <Link href={href}>
+                      {segment.charAt(0).toUpperCase() + segment.slice(1)}
+                    </Link>
+                  </BreadcrumbLink>
+                )}
+              </BreadcrumbItem>
+            </React.Fragment>
+          );
+        })}
+      </BreadcrumbList>
+    );
   };
 
   return (
@@ -56,7 +80,7 @@ export default function DashboardLayout({ children }) {
 
       <div className="text-xs ">
         <span className="flex items-center mx-[91px] my-3">
-          {getPageTitle()}
+          {getBreadcrumbs()}
           <SiPowerpages className="mx-1 my-2 text-blue-500" />
         </span>
       </div>
