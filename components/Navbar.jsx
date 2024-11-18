@@ -14,8 +14,21 @@ import { CiSearch } from "react-icons/ci";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { CiCalculator1 } from "react-icons/ci";
 import { IoLogoBuffer } from "react-icons/io";
+import { useRouter } from "next/navigation"; // Yönlendirme için
 
 const Navbar = () => {
+  const router = useRouter();
+
+  // Logout işlemi
+  const handleLogout = () => {
+    // Token ve kullanıcı bilgilerini localStorage'dan sil
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    // Kullanıcıyı login sayfasına yönlendir
+    router.push("/auth/login");
+  };
+
   return (
     <div className="flex justify-between items-center bg-white px-10 py-4 rounded-2xl">
       <div className="flex gap-1 items-center">
@@ -57,10 +70,10 @@ const Navbar = () => {
             <DropdownMenuContent>
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Profile</DropdownMenuItem>
-              <DropdownMenuItem>Billing</DropdownMenuItem>
-              <DropdownMenuItem>Team</DropdownMenuItem>
-              <DropdownMenuItem>Subscription</DropdownMenuItem>
+              <DropdownMenuItem onClick={handleLogout}>
+                Logout
+              </DropdownMenuItem>{" "}
+              {/* Logout butonuna tıklandığında handleLogout çalışacak */}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
