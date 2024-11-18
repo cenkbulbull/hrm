@@ -1,5 +1,8 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation"; // Yönlendirme için
+
 import { usePathname } from "next/navigation";
 import { SiPowerpages } from "react-icons/si";
 import { MdNavigateNext } from "react-icons/md";
@@ -20,6 +23,22 @@ import Link from "next/link";
 
 export default function DashboardLayout({ children }) {
   const pathname = usePathname();
+  const router = useRouter();
+
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true); // Loading state
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      router.push("/auth/login"); // Token yoksa login sayfasına yönlendir
+    } else {
+      const userData = JSON.parse(localStorage.getItem("user"));
+      setUser(userData);
+      setLoading(false); // Token varsa, loading durumu bitti
+    }
+  }, [router]);
 
   // Url'i bölelim ve breadcrumb oluşturacak şekilde işleyelim
   const getBreadcrumbs = () => {
@@ -73,6 +92,11 @@ export default function DashboardLayout({ children }) {
       </BreadcrumbList>
     );
   };
+
+  // Loading durumunda render edilmeyecek
+  if (loading) {
+    return null; // Sayfa hiç gözükmesin
+  }
 
   return (
     <div className="px-12 py-4 overflow-hidden ">

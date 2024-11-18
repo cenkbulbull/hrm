@@ -1,10 +1,60 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import "../auth.css";
 import Link from "next/link";
+import { useState } from "react";
+import { useRouter } from "next/navigation"; // Yönlendirme için useRouter
 
-export default function page() {
+export default function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const router = useRouter(); // useRouter hook'unu kullanıyoruz
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Validasyon
+    if (!email || !password) {
+      setError("Lütfen tüm alanları doldurun!");
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Başarı mesajını göster
+        setSuccess(data.message);
+
+        // Kullanıcı bilgilerini ve token'ı localStorage'a kaydediyoruz
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+
+        // Yönlendirme işlemi
+        setEmail(""); // Formu temizle
+        setPassword(""); // Formu temizle
+        router.push("/"); // Başarılı giriş sonrası anasayfaya yönlendir
+      } else {
+        setError(data.message || "Bir hata oluştu!");
+      }
+    } catch (error) {
+      setError("Bir hata oluştu!");
+    }
+  };
+
   return (
     <div className="w-full lg:grid h-screen items-center lg:grid-cols-2">
       <div className="flex items-center">
@@ -12,11 +62,11 @@ export default function page() {
           <div className="grid gap-2 text-center">
             <h1 className="text-xl font-bold">Login</h1>
             <p className="text-balance text-muted-foreground text-xs">
-              Enter your email below to login to your account
+              Please enter your login details.
             </p>
           </div>
 
-          <div className="grid gap-4">
+          <form onSubmit={handleSubmit} className="grid gap-4">
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -25,36 +75,36 @@ export default function page() {
                 placeholder="m@example.com"
                 required
                 className="text-xs placeholder:text-xs focus-visible:ring-0"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
+
             <div className="grid gap-2">
-              <div className="flex items-center">
-                <Label htmlFor="password">Password</Label>
-                <a
-                  href="/forgot-password"
-                  className="ml-auto inline-block text-sm underline"
-                >
-                  Forgot your password?
-                </a>
-              </div>
+              <Label htmlFor="password">Password</Label>
               <Input
                 id="password"
                 type="password"
                 required
                 placeholder="Password"
                 className="text-xs placeholder:text-xs focus-visible:ring-0"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
+
             <Button type="submit" className="w-full text-xs">
               Login
             </Button>
-            {/* <Button variant="outline" className="w-full">
-              Login with Google
-            </Button> */}
-          </div>
+          </form>
+
+          {/* Success/Error mesajlarını burada gösterebilirsiniz */}
+          {success && <div className="text-green-500">{success}</div>}
+          {error && <div className="text-red-500">{error}</div>}
+
           <div className="mt-4 text-center text-sm">
-            Dont have an account?
-            <Link href="signup" className="underline">
+            Don't have an account?
+            <Link href="/signup" className="underline">
               Sign up
             </Link>
           </div>

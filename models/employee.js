@@ -4,32 +4,32 @@ import mongoose from "mongoose";
 const workScheduleSchema = new mongoose.Schema(
   {
     monday: {
-      start: { type: String, required: true }, // Pazartesi başlangıç saati
-      end: { type: String, required: true }, // Pazartesi bitiş saati
+      start: { type: String, required: false, default: "" }, // Pazartesi başlangıç saati
+      end: { type: String, required: false, default: "" }, // Pazartesi bitiş saati
     },
     tuesday: {
-      start: { type: String, required: true }, // Salı başlangıç saati
-      end: { type: String, required: true }, // Salı bitiş saati
+      start: { type: String, required: false, default: "" }, // Salı başlangıç saati
+      end: { type: String, required: false, default: "" }, // Salı bitiş saati
     },
     wednesday: {
-      start: { type: String, required: true }, // Çarşamba başlangıç saati
-      end: { type: String, required: true }, // Çarşamba bitiş saati
+      start: { type: String, required: false, default: "" }, // Çarşamba başlangıç saati
+      end: { type: String, required: false, default: "" }, // Çarşamba bitiş saati
     },
     thursday: {
-      start: { type: String, required: true }, // Perşembe başlangıç saati
-      end: { type: String, required: true }, // Perşembe bitiş saati
+      start: { type: String, required: false, default: "" }, // Perşembe başlangıç saati
+      end: { type: String, required: false, default: "" }, // Perşembe bitiş saati
     },
     friday: {
-      start: { type: String, required: true }, // Cuma başlangıç saati
-      end: { type: String, required: true }, // Cuma bitiş saati
+      start: { type: String, required: false, default: "" }, // Cuma başlangıç saati
+      end: { type: String, required: false, default: "" }, // Cuma bitiş saati
     },
     saturday: {
-      start: { type: String, required: true }, // Cumartesi başlangıç saati
-      end: { type: String, required: true }, // Cumartesi bitiş saati
+      start: { type: String, required: false, default: "" }, // Cumartesi başlangıç saati
+      end: { type: String, required: false, default: "" }, // Cumartesi bitiş saati
     },
     sunday: {
-      start: { type: String, required: true }, // Pazar başlangıç saati
-      end: { type: String, required: true }, // Pazar bitiş saati
+      start: { type: String, required: false, default: "" }, // Pazar başlangıç saati
+      end: { type: String, required: false, default: "" }, // Pazar bitiş saati
     },
   },
   { _id: false } // _id'yi devre dışı bırakıyoruz çünkü bu nesne, ana kullanıcının altında bir alan olarak olacak
@@ -37,9 +37,9 @@ const workScheduleSchema = new mongoose.Schema(
 
 // Todo List Schema (Yapılacaklar Listesi)
 const todoListSchema = new mongoose.Schema({
-  task: { type: String, required: true },
-  date: { type: Date, required: true },
-  time: { type: String, required: true },
+  task: { type: String, required: false },
+  date: { type: Date, required: false },
+  time: { type: String, required: false },
   status: { type: Boolean, default: false },
 });
 
@@ -61,15 +61,15 @@ const employeeSchema = new mongoose.Schema(
   {
     fullname: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true }, // Şifreyi hash ile sakla
-    tel: { type: String, required: true },
-    department: { type: String, required: true },
-    title: { type: String, required: true },
-    startDate: { type: Date, required: true },
-    salary: { type: String, required: true },
-    workSchedule: workScheduleSchema,
-    todoList: [todoListSchema],
-    educations: [educationSchema],
+    password: { type: String, required: true },
+    tel: { type: String, required: false, default: "" },
+    department: { type: String, required: false, default: "" },
+    title: { type: String, required: false, default: "" },
+    startDate: { type: Date, required: false, default: Date.now }, // Varsayılan olarak şu anki tarihi ekleyelim
+    salary: { type: String, required: false, default: "" },
+    workSchedule: { type: workScheduleSchema, required: false, default: {} },
+    todolist: { type: [todoListSchema], required: false, default: [] },
+    educations: { type: [educationSchema], required: false, default: [] },
   },
   {
     timestamps: true, // createdAt ve updatedAt otomatik olarak eklenecek
