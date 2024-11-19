@@ -3,7 +3,7 @@
 import { CiCalendarDate } from "react-icons/ci";
 import { IoMdTime } from "react-icons/io";
 import { MdOutlineWorkOutline } from "react-icons/md";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { format, parse } from "date-fns";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -25,69 +25,109 @@ import {
 } from "@/components/ui/dialog";
 
 const TodoCard = () => {
-  const [date, setDate] = useState();
-  const [todos, setTodos] = useState([
-    {
-      id: 1,
-      date: "12.11.2024", // DD.MM.YYYY formatında
-      time: "18.00",
-      text: "hr toplantı",
+  const [date, setDate] = useState(null);
+  const [task, setTask] = useState(""); // Görev açıklaması
+  const [time, setTime] = useState(""); // Görev saati
+  const [todos, setTodos] = useState([]); // Görevler listesi
+
+  useEffect(() => {
+    const fetchEmployeeData = async () => {
+      try {
+        const response = await fetch(
+          `/api/employee/673b527cc012c25fd386e3b4/get`
+        );
+
+        if (!response.ok) {
+          throw new Error("Çalışan verileri alınırken bir hata oluştu.");
+        }
+
+        const data = await response.json();
+
+        if (data.success) {
+          setTodos(data.data.todolist);
+          // data.data.todolist.map((todo) => {
+          //   // setTodos(todo);
+          // });
+        } else {
+          setError(data.message); // Eğer çalışan bulunamazsa mesajı göster
+        }
+      } catch (error) {
+        console.log(error.message); // Hata durumunu yakala
+      }
+    };
+
+    // Çalışan verilerini çek
+    fetchEmployeeData();
+  }, []); // employeeId değiştiğinde yeniden çalışır
+
+  // Yeni görev eklemek için
+  const handleAddTodo = async (employeeId) => {
+    if (!task || !date || !time) return;
+
+    const newTodo = {
+      date: format(date, "dd.MM.yyyy"),
+      time,
+      task,
       checked: false,
-    },
-    {
-      id: 2,
-      date: "12.11.2024",
-      time: "19.00",
-      text: "hr sunum",
-      checked: false,
-    },
-    {
-      id: 3,
-      date: "12.11.2024",
-      time: "20.00",
-      text: "hr meeting",
-      checked: false,
-    },
-    {
-      id: 4,
-      date: "14.11.2024",
-      time: "13.00",
-      text: "hr meeting",
-      checked: false,
-    },
-    {
-      id: 5,
-      date: "17.11.2024",
-      time: "13.00",
-      text: "hr meeting",
-      checked: false,
-    },
-    {
-      id: 6,
-      date: "17.11.2024",
-      time: "13.00",
-      text: "hr meeting",
-      checked: false,
-    },
-  ]);
+    };
+
+    try {
+      // Fetch ile PATCH isteği göndermek
+      const response = await fetch(
+        `/api/employee/673b527cc012c25fd386e3b4/update`,
+        {
+          method: "PATCH", // PATCH metodu
+          headers: {
+            "Content-Type": "application/json", // JSON formatında veri gönderildiğini belirtir
+          },
+          body: JSON.stringify({
+            todolist: [newTodo], // Yeni todo eklemek için
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Todo eklerken bir hata oluştu");
+      }
+
+      // Başarıyla eklenen görev backend'e eklendiyse frontend'deki todos listesine de ekleyelim
+      const updatedEmployee = await response.json(); // Backend'den güncellenmiş çalışan verisini alıyoruz
+      setTodos((prevTodos) => [...prevTodos, newTodo]); // Yeni görevi frontend'de de ekliyoruz
+
+      // Formu temizleyelim
+      setTask("");
+      setDate(null);
+      setTime("");
+    } catch (error) {
+      console.error("Todo eklerken hata oluştu:", error);
+    }
+  };
 
   const handleCheckboxChange = (id) => {
     setTodos((prevTodos) =>
       prevTodos.map((todo) =>
-        todo.id === id ? { ...todo, checked: !todo.checked } : todo
+        todo._id === id ? { ...todo, checked: !todo.checked } : todo
       )
     );
   };
 
-  // Tarih formatını DD.MM.YYYY'den YYYY-MM-DD'ye dönüştür
-  const parseDate = (dateString) => {
-    return parse(dateString, "dd.MM.yyyy", new Date());
-  };
+  // // Tarih formatını DD.MM.YYYY'den YYYY-MM-DD'ye dönüştür
+  // const parseDate = (dateString) => {
+  //   return parse(dateString, "dd.MM.yyyy", new Date());
+  // };
 
   // Görevleri tarihe göre grupla
   const groupedTodos = todos.reduce((groups, todo) => {
-    const date = parseDate(todo.date); // Geçerli tarih formatına dönüştür
-    const dateString = format(date, "yyyy-MM-dd"); // Gruplamak için YYYY-MM-DD formatında kullan
+    // const date = parseDate(todo.date); // Geçerli tarih formatına dönüştür
+    // console.log(date);
+    // const dateString = format(date, "yyyy-MM-dd"); // Gruplamak için YYYY-MM-DD formatında kullan
+    // if (!groups[dateString]) {
+    //   groups[dateString] = [];
+    // }
+    // groups[dateString].push(todo);
+    // return groups;
+
+    const dateString = format(todo.date, "yyyy-MM-dd"); // Gruplamak için YYYY-MM-DD formatında kullan
     if (!groups[dateString]) {
       groups[dateString] = [];
     }
@@ -122,6 +162,7 @@ const TodoCard = () => {
                     <Input
                       className="px-10 focus-visible:ring-0 text-xs placeholder:text-xs"
                       placeholder="Enter your planned job."
+                      onChange={(e) => setTask(e.target.value)}
                     />
                   </div>
 
@@ -148,6 +189,7 @@ const TodoCard = () => {
                           mode="single"
                           selected={date}
                           onSelect={setDate}
+                          onChange={(e) => setDate(new Date(e.target.value))}
                         />
                       </div>
                     </PopoverContent>
@@ -155,10 +197,14 @@ const TodoCard = () => {
 
                   <Button variant="outline">
                     <IoMdTime />
-                    <Input type="time" className="border-0 shadow-none" />
+                    <Input
+                      type="time"
+                      className="border-0 shadow-none"
+                      onChange={(e) => setTime(e.target.value)}
+                    />
                   </Button>
 
-                  <Button>Add</Button>
+                  <Button onClick={handleAddTodo}>Add</Button>
                 </div>
               </DialogHeader>
             </DialogContent>
@@ -177,11 +223,11 @@ const TodoCard = () => {
               </div>
               <ul className="text-sm flex flex-col gap-2">
                 {groupedTodos[dateString].map((todo) => (
-                  <li key={todo.id} className="flex items-center gap-2">
+                  <li key={todo._id} className="flex items-center gap-2">
                     <Checkbox
-                      id={`todo-${todo.id}`}
+                      id={`todo-${todo._id}`}
                       checked={todo.checked}
-                      onCheckedChange={() => handleCheckboxChange(todo.id)}
+                      onCheckedChange={() => handleCheckboxChange(todo._id)}
                     />
                     <div
                       className={`flex gap-2 w-full ${
@@ -189,7 +235,7 @@ const TodoCard = () => {
                       }`}
                     >
                       <span>{todo.time}</span>
-                      <label htmlFor={`todo-${todo.id}`}>{todo.text}</label>
+                      <label htmlFor={`todo-${todo._id}`}>{todo.task}</label>
                     </div>
                   </li>
                 ))}

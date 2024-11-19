@@ -18,6 +18,8 @@ import { useRouter } from "next/navigation"; // Yönlendirme için
 
 const Navbar = () => {
   const router = useRouter();
+  const fullname = JSON.parse(localStorage.getItem("user")).fullname;
+  const email = JSON.parse(localStorage.getItem("user")).email;
 
   // Logout işlemi
   const handleLogout = () => {
@@ -62,8 +64,8 @@ const Navbar = () => {
               </Avatar>
 
               <div className="flex flex-col text-xs items-start">
-                <span>Admin</span>
-                <span>admin@mail.com</span>
+                <span>{fullname}</span>
+                <span>{email}</span>
               </div>
             </DropdownMenuTrigger>
 
