@@ -13,7 +13,7 @@ import { GrChannel } from "react-icons/gr";
 import { TbHours12 } from "react-icons/tb";
 import { IoMdTime } from "react-icons/io";
 
-const WorkScheduleCard = () => {
+const WorkScheduleCard = ({ schedule }) => {
   return (
     <div className="flex flex-col gap-3 bg-white p-5 rounded-2xl font-light shadow-md">
       <div className="flex justify-between items-center">
@@ -180,82 +180,37 @@ const WorkScheduleCard = () => {
       </div>
 
       <ul className="text-sm flex flex-col gap-2 divide-y-[1px]">
-        <li className="flex items-center justify-between gap-2 pt-2">
-          <div className="flex items-center gap-2">
-            <TbHours12 />
-            <span>Monday</span>
-          </div>
+        {[
+          "monday",
+          "tuesday",
+          "wednesday",
+          "thursday",
+          "friday",
+          "saturday",
+          "sunday",
+        ].map((day) => {
+          const daySchedule = schedule[day]; // Her günün saatlerini alıyoruz
+          const startTime = daySchedule?.start || ""; // Başlangıç saati
+          const endTime = daySchedule?.end || ""; // Bitiş saati
+          const workHours =
+            startTime && endTime ? `${startTime} - ${endTime}` : "Not Working"; // Eğer saatler varsa yaz, yoksa "Not Working"
 
-          <div>
-            <span>09:00</span> - <span>18:00</span>
-          </div>
-        </li>
-
-        <li className="flex items-center justify-between gap-2 pt-2">
-          <div className="flex items-center gap-2">
-            <TbHours12 />
-            <span>Tuesday</span>
-          </div>
-
-          <div>
-            <span>09:00</span> - <span>18:00</span>
-          </div>
-        </li>
-
-        <li className="flex items-center justify-between gap-2 pt-2">
-          <div className="flex items-center gap-2">
-            <TbHours12 />
-            <span>Wednesday</span>
-          </div>
-
-          <div>
-            <span>09:00</span> - <span>18:00</span>
-          </div>
-        </li>
-
-        <li className="flex items-center justify-between gap-2 pt-2">
-          <div className="flex items-center gap-2">
-            <TbHours12 />
-            <span>Thursday</span>
-          </div>
-
-          <div>
-            <span>09:00</span> - <span>18:00</span>
-          </div>
-        </li>
-
-        <li className="flex items-center justify-between gap-2 pt-2">
-          <div className="flex items-center gap-2">
-            <TbHours12 />
-            <span>Friday</span>
-          </div>
-
-          <div>
-            <span>09:00</span> - <span>18:00</span>
-          </div>
-        </li>
-
-        <li className="flex items-center justify-between gap-2 pt-2">
-          <div className="flex items-center gap-2">
-            <TbHours12 />
-            <span>Saturday</span>
-          </div>
-
-          <div>
-            <span>Not Working</span>
-          </div>
-        </li>
-
-        <li className="flex items-center justify-between gap-2 pt-2">
-          <div className="flex items-center gap-2">
-            <TbHours12 />
-            <span>Sunday</span>
-          </div>
-
-          <div>
-            <span>Not Working</span>
-          </div>
-        </li>
+          return (
+            <li
+              key={day}
+              className="flex items-center justify-between gap-2 pt-2"
+            >
+              <div className="flex items-center gap-2">
+                <TbHours12 />
+                <span>{day.charAt(0).toUpperCase() + day.slice(1)}</span>{" "}
+                {/* Gün adını baş harfi büyük olarak yaz */}
+              </div>
+              <div>
+                <span>{workHours}</span> {/* Saatleri veya "Not Working" yaz */}
+              </div>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

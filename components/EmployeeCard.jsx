@@ -20,13 +20,13 @@ const EmployeeCard = ({
   department,
   salary,
   image = "https://github.com/shadcn.png",
-  link = "1",
+  link,
   detail,
 }) => {
   return (
     <Link
-      href={`/employees/${link}`}
-      className="relative flex flex-col gap-3 bg-white p-8 rounded-2xl shadow-md cursor-pointer"
+      href={link ? `/employees/${link}` : "#"}
+      className="relative flex flex-col gap-3 bg-white p-5 rounded-2xl shadow-md cursor-pointer"
     >
       <DropdownMenu>
         <DropdownMenuTrigger className="absolute right-5 top-3">
